@@ -17,7 +17,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Services
             return await _authorRepository.GetAllAuthors();
         }
 
-        public async Task<Author> GetAuthorById(int id)
+        public async Task<Author> GetAuthorById(Guid id)
         {
             return await _authorRepository.GetAuthorById(id);
         }
@@ -32,7 +32,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Services
             await _authorRepository.UpdateAuthor(author);
         }
 
-        public async Task DeleteAuthor(int id)
+        public async Task DeleteAuthor(Guid id)
         {
             await _authorRepository.DeleteAuthor(id);
         }

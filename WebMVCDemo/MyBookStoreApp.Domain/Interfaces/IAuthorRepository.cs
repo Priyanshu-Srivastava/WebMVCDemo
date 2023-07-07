@@ -5,9 +5,9 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Interfaces
     public interface IAuthorRepository
     {
         Task<IEnumerable<Author>> GetAllAuthors();
-        Task<Author> GetAuthorById(int id);
+        Task<Author> GetAuthorById(Guid id);
         Task CreateAuthor(Author author);
         Task UpdateAuthor(Author author);
-        Task DeleteAuthor(int id);
+        Task DeleteAuthor(Guid id);
     }
 }

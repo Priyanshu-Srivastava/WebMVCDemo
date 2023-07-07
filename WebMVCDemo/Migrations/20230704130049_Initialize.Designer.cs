@@ -9,11 +9,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace MyBookStoreApp.MyBookStoreApp.Infrastructure.Migrations
+namespace MyBookStoreApp.Migrations
 {
     [DbContext(typeof(BookstoreDbContext))]
-    [Migration("20230704083839_DBUpdate1")]
-    partial class DBUpdate1
+    [Migration("20230704130049_Initialize")]
+    partial class Initialize
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

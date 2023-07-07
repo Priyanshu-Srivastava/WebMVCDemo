@@ -1,0 +1,16 @@
+﻿@model MyBookStoreApp.MyBookStoreApp.Web.ViewModels.AlertViewModel
+
+<div class="alert @(Model.IsSuccess ? "alert-success" : "alert-danger")">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col text-@(Model.IsSuccess ? "success" : "danger") my-4">
+                <h3>@(Model.IsSuccess ? "Success!" : "Failure!")</h3>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-@(Model.IsSuccess ? "success" : "danger")">
+                @Model.Message
+            </div>
+        </div>
+    </div>
+</div>

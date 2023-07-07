@@ -19,7 +19,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Repositories
             return await _dbContext.Authors.ToListAsync();
         }
 
-        public async Task<Author> GetAuthorById(int id)
+        public async Task<Author> GetAuthorById(Guid id)
         {
             return await _dbContext.Authors.FindAsync(id);
         }
@@ -36,7 +36,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Repositories
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task DeleteAuthor(int id)
+        public async Task DeleteAuthor(Guid id)
         {
             var author = await _dbContext.Authors.FindAsync(id);
             _dbContext.Authors.Remove(author);

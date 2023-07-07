@@ -103,7 +103,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Web
                         {
                             endpoints.MapControllerRoute(
                                 name: "default",
-                                pattern: "{controller=Author}/{action=Index}");
+                                pattern: "{controller=Home}/{action=Index}");
                         });
                     });
                 });
