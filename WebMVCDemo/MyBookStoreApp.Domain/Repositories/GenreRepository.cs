@@ -1,6 +1,44 @@
-﻿namespace MyBookStoreApp.MyBookStoreApp.Domain.Repositories
+﻿using MyBookstoreApp.Infrastructure.DbContexts;
+using MyBookStoreApp.MyBookStoreApp.Domain.Interfaces;
+using MyBookStoreApp.MyBookStoreApp.Domain.Models;
+using Microsoft.EntityFrameworkCore;
+
+namespace MyBookStoreApp.MyBookStoreApp.Domain.Repositories
 {
-    public class GenreRepository
+    public class GenreRepository : IGenreRepository
     {
+        private readonly BookStoreDbContext _dbContext;
+        public GenreRepository(BookStoreDbContext dbContext) 
+        { 
+            _dbContext= dbContext;
+        }
+        public async Task CreateGenre(Genre genre)
+        {
+            _dbContext.Genres.AddAsync(genre);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteGenre(Guid id)
+        {
+            var genre = GetGenreById(id).Result;
+            _dbContext.Genres.Remove(genre);
+            _dbContext.SaveChanges();
+        }
+
+        public async Task<IEnumerable<Genre>> GetAllGenres()
+        {
+            return await _dbContext.Genres.ToListAsync();
+        }
+
+        public async Task<Genre> GetGenreById(Guid id)
+        {
+            return await _dbContext.Genres.FindAsync(id);
+        }
+
+        public async Task UpdateGenre(Genre genre)
+        {
+            _dbContext.Entry(genre).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

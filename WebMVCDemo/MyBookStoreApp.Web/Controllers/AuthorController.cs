@@ -15,8 +15,6 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.Controllers
             _authorService = authorService;
         }
 
-
-
         public async Task<IActionResult> Index()
         {
             var allAuthors = new List<AuthorViewModel>();

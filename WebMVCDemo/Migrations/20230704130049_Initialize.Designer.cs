@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace MyBookStoreApp.Migrations
 {
-    [DbContext(typeof(BookstoreDbContext))]
+    [DbContext(typeof(BookStoreDbContext))]
     [Migration("20230704130049_Initialize")]
     partial class Initialize
     {

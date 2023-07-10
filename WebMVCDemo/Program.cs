@@ -63,10 +63,14 @@ namespace MyBookStoreApp.MyBookStoreApp.Web
                                 options.ViewLocationFormats.Add("/MyBookstoreApp.Web/Views/{1}/{0}" + RazorViewEngine.ViewExtension);
                                 options.ViewLocationFormats.Add("/MyBookstoreApp.Web/Views/Shared/{0}" + RazorViewEngine.ViewExtension);
                             });
-                        services.AddDbContext<BookstoreDbContext>(options =>
+                        services.AddDbContext<BookStoreDbContext>(options =>
                             options.UseNpgsql(configuration.GetSection("ConnectionStrings:BookstoreDbConnection").Value));
                         services.AddScoped<IAuthorRepository, AuthorRepository>();
+                        services.AddScoped<IGenreRepository, GenreRepository>();
+                        services.AddScoped<IBookRepository, BookRepository>();
                         services.AddScoped<AuthorService>();
+                        services.AddScoped<GenreService>();
+                        services.AddScoped<BookService>();
                     })
                     .Configure((ctx, app) =>
                     {

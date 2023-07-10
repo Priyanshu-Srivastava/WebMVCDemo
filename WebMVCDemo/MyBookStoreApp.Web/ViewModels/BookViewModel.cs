@@ -5,8 +5,9 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.ViewModels
 {
     public class BookViewModel
     {
+        public Guid BookId { get; set; }
         [Required]
-        public string Title { get; set; }
+        public string Title { get; set; } = string.Empty;
 
         [Required]
         public Guid AuthorId { get; set; }
@@ -20,6 +21,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.ViewModels
 
         [Required]
         public DateTime PublicationDate { get; set; }
+
 
     }
 

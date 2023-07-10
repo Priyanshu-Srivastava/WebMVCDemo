@@ -3,9 +3,9 @@ using MyBookStoreApp.MyBookStoreApp.Domain.Models;
 
 namespace MyBookstoreApp.Infrastructure.DbContexts
 {
-    public class BookstoreDbContext : DbContext
+    public class BookStoreDbContext : DbContext
     {
-        public BookstoreDbContext(DbContextOptions<BookstoreDbContext> options) : base(options)
+        public BookStoreDbContext(DbContextOptions<BookStoreDbContext> options) : base(options)
         {
         }
 

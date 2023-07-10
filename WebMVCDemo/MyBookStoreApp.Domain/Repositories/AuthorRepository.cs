@@ -7,9 +7,9 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Repositories
 {
     public class AuthorRepository : IAuthorRepository
     {
-        private readonly BookstoreDbContext _dbContext;
+        private readonly BookStoreDbContext _dbContext;
 
-        public AuthorRepository(BookstoreDbContext dbContext)
+        public AuthorRepository(BookStoreDbContext dbContext)
         {
             _dbContext = dbContext;
         }
