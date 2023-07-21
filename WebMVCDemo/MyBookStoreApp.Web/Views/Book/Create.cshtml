@@ -1,70 +1,101 @@
 ﻿@using MyBookStoreApp.MyBookStoreApp.Web.ViewModels;
 @model MyBookStoreApp.MyBookStoreApp.Web.ViewModels.BookViewModel
 
-    <h2 class="card-header">Add Author</h2>
-    <div class="p-3">
-        <form method="post">
-            <div class="container">
-                <div class="form-group my-5 row">
-                    <label asp-for="Title" class="form-label col-md-2"></label>
-                    <div class="col-md-10 row">
-                        <input asp-for="Title" class="form-control col" />
-                        <span asp-validation-for="Title" class="col  text-danger"></span>
-                    </div>
+<h2 class="card-header">Add Book</h2>
+<div class="p-3">
+    <form method="post">
+        <div class="container">
+            <div class="form-group my-5 row">
+                <label asp-for="Title" class="form-label col-md-2"></label>
+                <div class="col-md-10 row">
+                    <input asp-for="Title" class="form-control col" />
+                    <span asp-validation-for="Title" class="col  text-danger"></span>
                 </div>
+            </div>
 
-                <div class="form-group my-5 row">
-                    <label asp-for="GenreId" class="form-label col-md-2"></label>
-                    <div class="col-md-10 row">
+           @* <div class="form-group my-5 row">
+                <label asp-for="GenreId" class="form-label col-md-2"></label>
+                <div class="col-md-10 row">
                     <input asp-for="GenreId" class="form-control col" />
                     <span asp-validation-for="GenreId" class="col text-danger"></span>
-                    </div>
                 </div>
-
-                <div class="form-group my-5 row">
-                    <label asp-for="Price" class="form-label col-md-2"></label>
-                    <div class="col-md-10 row">
-                        <input asp-for="Price" class="form-control col" />
-                        <span asp-validation-for="Price" class="col text-danger"></span>
-                    </div>
+            </div>*@
+            <div class="form-group my-5 row">
+                <label asp-for="GenreId" class="form-label col-md-2">Genre</label>
+                <div class="col-md-10 row">
+                    <select asp-for="GenreId" asp-items="Model.Genres" class="form-select col">
+                        <option value="">Select an option</option>
+                    </select>
+                    <span asp-validation-for="GenreId" class="col text-danger"></span>
                 </div>
-
-                <div class="form-group row">
-                    <div class="offset-md-2 col-md-4">
-                        <button type="submit" class="btn btn-primary">Add</button>
-                        <button type="reset" class="btn btn-danger" onclick="resetValidation()">Reset</button>
-                    </div>
-                </div>
-                <!-- JavaScript code -->
-                <script>
-                    function resetValidation() {
-                        // Clear all validation messages
-                        var validationElements = document.getElementsByClassName("text-danger");
-                        for (var i = 0; i < validationElements.length; i++) {
-                            validationElements[i].textContent = "";
-                        }
-                    }
-                </script>
             </div>
-        </form>
-       
+            @*<div class="form-group my-5 row">
+                <label asp-for="AuthorId" class="form-label col-md-2"></label>
+                <div class="col-md-10 row">
+                    <input asp-for="AuthorId" class="form-control col" />
+                    <span asp-validation-for="AuthorId" class="col text-danger"></span>
+                </div>
+            </div>*@
+            <div class="form-group my-5 row">
+                <label asp-for="AuthorId" class="form-label col-md-2">Author</label>
+                <div class="col-md-10 row">
+                    <select asp-for="AuthorId" asp-items="Model.Authors" class="form-select col">
+                        <option value="">Select an option</option>
+                    </select>
+                    <span asp-validation-for="AuthorId" class="col text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group my-5 row">
+                <label asp-for="PublicationDate" class="form-label col-md-2"></label>
+                <div class="col-md-10 row">
+                    <input asp-for="PublicationDate" class="form-control col" />
+                    <span asp-validation-for="PublicationDate" class="col text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group my-5 row">
+                <label asp-for="Price" class="form-label col-md-2"></label>
+                <div class="col-md-10 row">
+                    <input asp-for="Price" class="form-control col" />
+                    <span asp-validation-for="Price" class="col text-danger"></span>
+                </div>
+            </div>
 
-         <div class="modal-dialog container">
-            @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
-            {
-                @await Html.PartialAsync("_Alert", new AlertViewModel {
-            IsSuccess = true,
-            Message = ViewBag.SuccessMessage
-            })
-            }
-
-            @if (!string.IsNullOrEmpty(ViewBag.FailureMessage))
-            {
-                @await Html.PartialAsync("_Alert", new AlertViewModel {
-            IsSuccess = false,
-            Message = ViewBag.FailureMessage
-            })
-            }
+            <div class="form-group row">
+                <div class="offset-md-2 col-md-4">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="reset" class="btn btn-danger" onclick="resetValidation()">Reset</button>
+                </div>
+            </div>
+            <!-- JavaScript code -->
+            <script>
+                function resetValidation() {
+                    // Clear all validation messages
+                    var validationElements = document.getElementsByClassName("text-danger");
+                    for (var i = 0; i < validationElements.length; i++) {
+                        validationElements[i].textContent = "";
+                    }
+                }
+            </script>
         </div>
-   
+    </form>
+
+
+    <div class="modal-dialog container">
+        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
+        {
+            @await Html.PartialAsync("_Alert", new AlertViewModel {
+        IsSuccess = true,
+        Message = ViewBag.SuccessMessage
+        })
+        }
+
+        @if (!string.IsNullOrEmpty(ViewBag.FailureMessage))
+        {
+            @await Html.PartialAsync("_Alert", new AlertViewModel {
+        IsSuccess = false,
+        Message = ViewBag.FailureMessage
+        })
+        }
+    </div>
+
 </div>

@@ -1,26 +1,27 @@
 ﻿@using MyBookStoreApp.MyBookStoreApp.Web.ViewModels
-@model List<GenreViewModel>
+@model PagedViewModel<GenreViewModel>
 
 @{
     ViewBag.Title = "Genres";
 }
-
-<div class="card px-2 border-bottom-1 bg-light container">
+<div class="container-fluid">
+    <a href="@Url.Action("Index","Home")">Home</a> &gt;  <a href="@Url.Action("Index","Genre")">View Genres</a>
+</div>
+<div class="card px-2 border-bottom-1 bg-light container p-3">
     <div class="row">
-        <h3 class="col-4">All Genres</h3>
+        <h3 class="col-5">All Genres</h3>
         <div class="col-4">
             <input type="text" class="form-control" />
         </div>
-        <div class="col-1">
-            <input type="button" class="btn btn-primary" value="Search" />
-        </div>
         <div class="col-3">
+            <input type="button" class="btn btn-primary" value="Search" />
             <a href="@Url.Action("Create", "Genre")" class="btn btn-success">+ Create new</a>
         </div>
     </div>
 </div>
+<div id="MessageBox"></div>
 <div class="table-responsive">
-    @if (Model == null)
+    @if (Model?.Data == null)
     {
         <div class="card bg-info">No genres to display</div>
     }
@@ -28,16 +29,16 @@
     {
         <table class="table table-bordered">
             <thead>
-                <tr>
-                    <th>@Html.DisplayNameFor(model => model[0].Name)</th>
-                    <th>@Html.DisplayNameFor(model => model[0].Description)</th>
+                <tr class="bg-light">
+                    <th>@Html.DisplayNameFor(model => model.Data.ToArray()[0].Name)</th>
+                    <th>@Html.DisplayNameFor(model => model.Data.ToArray()[0].Description)</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                @foreach (var genre in Model)
+                @foreach (var genre in Model.Data)
                 {
-                    <tr>
+                    <tr id="row_@genre.GenreId">
                         <td>@Html.DisplayFor(modelItem => genre.Name)</td>
                         <td>@Html.DisplayFor(modelItem => genre.Description)</td>
                         <td>
@@ -61,7 +62,7 @@
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-primary mx-3" data-bs-dismiss="modal">Cancel</button>
-                                            <a href="@Url.Action("Delete", "Genre", new { id = genre.GenreId})" class="btn btn-danger">Delete</a>
+                                            <button type="button" class="btn btn-danger " onclick="deleteGenre('@genre.GenreId')">Delete</button>
                                         </div>
                                     </div>
                                 </div>
@@ -73,3 +74,71 @@
         </table>
     }
 </div>
+<script>
+    function deleteGenre(id) {
+        fetch('/Genre/Delete?id=' + id, {
+            method: 'DELETE'
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Genre deleted successfully.');
+                    displayResult(true, data.message);
+                    removeGenreFromView(id);
+                } else {
+                    console.log('Failed to delete Genre.');
+                    displayResult(false, data.message);
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while deleting genre:', error);
+                displayResult(false, data.message);
+            });
+        toggleModal(id);
+    }
+
+    function removeGenreFromView(id) {
+        var genreRow = document.getElementById("row_" + id);
+        if (genreRow) {
+            genreRow.remove(); // Remove the genre row from the view
+        }
+    }
+
+    function toggleModal(id) {
+        var mymodal = new bootstrap.Modal(document.getElementById("deleteConfirmationModal_" + id));
+        var backdrops = document.querySelectorAll('.modal-backdrop');
+
+        backdrops.forEach(backdrop => {
+            backdrop.remove();
+        });
+
+        setTimeout(function () {
+            mymodal.hide();
+        }, 100); // Add a delay of 100 milliseconds (adjust as needed)
+    }
+
+
+    function displayResult(isSuccess, message) {
+        var acknowledgementBox = document.getElementById("MessageBox");
+        acknowledgementBox.className = "";
+        if (isSuccess) {
+            acknowledgementBox.classList.add("text-success", "card", "alert-success", "p-4");
+            acknowledgementBox.textContent = message;
+        }
+        else {
+            acknowledgementBox.classList.add("text-danger", "card", "alert-danger", "p-4");
+            acknowledgementBox.textContent = message;
+        }
+    }
+
+    function resetValidation() {
+        // Clear all validation messages
+        var validationElements = document.getElementsByClassName("text-danger");
+        var acknowledgementBox = document.getElementById("MessageBox");
+
+        acknowledgementBox.innerText = "";
+        for (var i = 0; i < validationElements.length; i++) {
+            validationElements[i].textContent = "";
+        }
+    }
+</script>

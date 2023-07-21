@@ -7,6 +7,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Interfaces
         Task CreateGenre(Genre genre);
         Task DeleteGenre(Guid id);
         Task<IEnumerable<Genre>> GetAllGenres();
+        Task<(IEnumerable<Genre>, int)> GetPagedGenres(int currentPageIndex, int pageSize);
         Task<Genre> GetGenreById(Guid id);
         Task UpdateGenre(Genre genre);
     }

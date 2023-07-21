@@ -2,6 +2,7 @@
 @model MyBookStoreApp.MyBookStoreApp.Web.ViewModels.AuthorViewModel
 
     <h2 class="card-header">Add Author</h2>
+    <div id="MessageBox"></div>
     <div class="p-3">
         <form method="post">
             <div class="container">
@@ -31,7 +32,7 @@
 
                 <div class="form-group row">
                     <div class="offset-md-2 col-md-4">
-                        <button type="submit" class="btn btn-primary">Add</button>
+                        <button type="button" class="btn btn-primary" onclick="createAuthor()">Add</button>
                         <button type="reset" class="btn btn-danger" onclick="resetValidation()">Reset</button>
                     </div>
                 </div>
@@ -46,25 +47,55 @@
                     }
                 </script>
             </div>
-        </form>
-       
-
-         <div class="modal-dialog container">
-            @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
-            {
-                @await Html.PartialAsync("_Alert", new AlertViewModel {
-            IsSuccess = true,
-            Message = ViewBag.SuccessMessage
-            })
-            }
-
-            @if (!string.IsNullOrEmpty(ViewBag.FailureMessage))
-            {
-                @await Html.PartialAsync("_Alert", new AlertViewModel {
-            IsSuccess = false,
-            Message = ViewBag.FailureMessage
-            })
-            }
-        </div>
-   
+        </form>   
 </div>
+<script>
+    function createAuthor() {
+        var form = document.querySelector('form');
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Author created successfully.');
+                    displayResult(true, data.message);
+
+                } else {
+                    console.log('Failed to add new author details!');
+                    displayResult(false, data.message);
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while adding new author :', error);
+                displayResult(false, data.message);
+            });
+    }
+
+    function displayResult(isSuccess, message) {
+        var acknowledgementBox = document.getElementById("MessageBox");
+        acknowledgementBox.className = "";
+        if (isSuccess) {
+            acknowledgementBox.classList.add("text-success", "card", "alert-success", "p-4");
+            acknowledgementBox.textContent = message;
+        }
+        else {
+            acknowledgementBox.classList.add("text-danger", "card", "alert-danger", "p-4");
+            acknowledgementBox.textContent = message;
+        }
+    }
+
+    function resetValidation() {
+        // Clear all validation messages
+        var validationElements = document.getElementsByClassName("text-danger");
+        var acknowledgementBox = document.getElementById("MessageBox");
+
+        acknowledgementBox.innerText = "";
+        for (var i = 0; i < validationElements.length; i++) {
+            validationElements[i].textContent = "";
+        }
+    }
+</script>

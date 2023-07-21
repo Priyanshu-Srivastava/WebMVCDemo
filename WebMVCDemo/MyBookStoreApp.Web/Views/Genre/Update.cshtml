@@ -1,9 +1,14 @@
 ﻿@using MyBookStoreApp.MyBookStoreApp.Web.ViewModels
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Web.Virtualization
 @model MyBookStoreApp.MyBookStoreApp.Web.ViewModels.GenreViewModel
 
-<h2 class="card-header">Edit author details</h2>
+
+<h2 class="card-header">Edit genre details</h2>
+
 <div class="p-3">
-    <form method="patch" asp-action="Update" asp-controller="Author">
+    <div id="AcknowledgementBox"></div>
+    <form method="patch" asp-action="Update" asp-controller="Genre">
         <div class="container">
             <input type="hidden" asp-for="GenreId" />
             <div class="form-group my-5 row">
@@ -24,63 +29,60 @@
 
             <div class="form-group row">
                 <div class="offset-md-2 col-md-4">
-                    <button type="button" class="btn btn-primary" onclick="updateAuthor()">Update</button>
+                    <button type="button" class="btn btn-primary" onclick="updateGenre()">Update</button>
                     <button type="reset" class="btn btn-danger" onclick="resetValidation()">Reset</button>
                 </div>
             </div>
         </div>
     </form>
-
-    <script>
-        function updateAuthor() {
-            var form = document.querySelector('form');
-            var formData = new FormData(form);
-
-            fetch(form.action, {
-                method: 'PATCH',
-                body: formData
-            })
-                .then(response => {
-                    if (response.ok) {
-                        // Handle success
-                        console.log('Author details updated successfully.');
-                    } else {
-                        // Handle failure
-                        console.log('Failed to update Author details.');
-                    }
-                })
-                .catch(error => {
-                    console.error('An error occurred while updating Author details:', error);
-                });
-        }
-
-        function resetValidation() {
-            // Clear all validation messages
-            var validationElements = document.getElementsByClassName("text-danger");
-            for (var i = 0; i < validationElements.length; i++) {
-                validationElements[i].textContent = "";
-            }
-        }
-    </script>
-
-
-
-    <div class="modal-dialog container">
-        @if (!string.IsNullOrEmpty(ViewBag.SuccessMessage))
-        {
-            @await Html.PartialAsync("_Alert", new AlertViewModel {
-        IsSuccess = true,
-        Message = ViewBag.SuccessMessage
-        })
-        }
-
-        @if (!string.IsNullOrEmpty(ViewBag.FailureMessage))
-        {
-            @await Html.PartialAsync("_Alert", new AlertViewModel {
-        IsSuccess = false,
-        Message = ViewBag.FailureMessage
-        })
-        }
-    </div>
-
 </div>
+<script>
+    function updateGenre() {
+        var form = document.querySelector('form');
+        var formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'PATCH',
+            body: formData
+        })
+            .then(response=> response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Genre details updated successfully.');
+                    displayResult(true, data.message);
+
+                } else {
+                    console.log('Failed to update Genre details.');
+                    displayResult(false, data.message);
+                }
+            })
+            .catch(error => {
+                console.error('An error occurred while updating genre details:', error);
+                displayResult(false, data.message);
+            });
+    }
+
+    function displayResult(isSuccess, message) {
+        var acknowledgementBox = document.getElementById("AcknowledgementBox");
+        acknowledgementBox.className = "";
+        if (isSuccess) {
+            acknowledgementBox.classList.add("text-success", "card", "alert-success", "p-4");
+            acknowledgementBox.textContent = message;
+        }
+        else {
+            acknowledgementBox.classList.add("text-danger", "card", "alert-danger", "p-4");
+            acknowledgementBox.textContent = message;
+        }
+    }
+
+    function resetValidation() {
+        // Clear all validation messages
+        var validationElements = document.getElementsByClassName("text-danger");
+        var acknowledgementBox = document.getElementById("AcknowledgementBox");
+        acknowledgementBox.className = "";
+        acknowledgementBox.textContent = "";
+        for (var i = 0; i < validationElements.length; i++) {
+            validationElements[i].textContent = "";
+        }
+    }
+</script>

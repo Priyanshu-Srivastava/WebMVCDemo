@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Mvc.Razor;
 using MyBookStoreApp.MyBookStoreApp.Domain.Services;
 using MyBookStoreApp.MyBookStoreApp.Domain.Interfaces;
 using MyBookStoreApp.MyBookStoreApp.Domain.Repositories;
+using Microsoft.AspNetCore.Builder;
 
 namespace MyBookStoreApp.MyBookStoreApp.Web
 {
@@ -57,6 +58,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Web
                 {
                     webHostBuilder.ConfigureServices((services) =>
                     {
+                        services.AddServerSideBlazor();
                         services.AddControllersWithViews()
                             .AddRazorOptions((options) =>
                             {
@@ -108,7 +110,9 @@ namespace MyBookStoreApp.MyBookStoreApp.Web
                             endpoints.MapControllerRoute(
                                 name: "default",
                                 pattern: "{controller=Home}/{action=Index}");
+                            endpoints.MapBlazorHub();
                         });
+                       
                     });
                 });
         }

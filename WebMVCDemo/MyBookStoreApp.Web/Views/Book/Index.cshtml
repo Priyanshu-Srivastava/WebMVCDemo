@@ -25,7 +25,8 @@
             <tr>
                 <th>@Html.DisplayNameFor(model => model[0].Title)</th>
                 <th>@Html.DisplayNameFor(model => model[0].Price)</th>
-                <th>@Html.DisplayNameFor(model => model[0].AuthorId)</th>
+                <th>@Html.DisplayNameFor(model => model[0].AuthorName)</th>
+                <th>@Html.DisplayNameFor(model => model[0].BookGenre)</th>
                 <th>@Html.DisplayNameFor(model => model[0].PublicationDate)</th>
                 <th></th>
             </tr>
@@ -35,8 +36,9 @@
             {
                 <tr>
                     <td>@Html.DisplayFor(modelItem => book.Title)</td>
-                    <td>@Html.DisplayFor(modelItem => book.Price)</td>
-                    <td>@Html.DisplayFor(modelItem => book.AuthorId)</td>
+                    <td>&#8377;@Html.DisplayFor(modelItem => book.Price)</td>
+                    <td>@Html.DisplayFor(modelItem => book.AuthorName)</td>
+                    <td>@Html.DisplayFor(modelItem => book.BookGenre)</td>
                     <td>@Html.DisplayFor(modelItem => book.PublicationDate)</td>
                     <td>
                         <div class="btn-group" role="group">

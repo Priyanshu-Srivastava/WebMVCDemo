@@ -8,7 +8,10 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.ViewModels
         public Guid GenreId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        //public ICollection<Book> Books { get; set; }
+        
+        //Going to use these to display alerts
+        public string AlertMessage { get; set; } = String.Empty;
+        public string AlertClass { get; set; } = String.Empty;
 
     }
 

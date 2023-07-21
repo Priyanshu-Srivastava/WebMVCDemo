@@ -22,7 +22,8 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Repositories
         }
         public async Task CreateBook(Book book)
         {
-            await _dbContext.Books.AddAsync(book);
+            _dbContext.Books.AddAsync(book);
+            await _dbContext.SaveChangesAsync();
         }
         public async Task UpdateBook(Book book)
         {

@@ -1,4 +1,5 @@
-﻿using MyBookStoreApp.MyBookStoreApp.Domain.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using MyBookStoreApp.MyBookStoreApp.Domain.Models;
 using System.ComponentModel.DataAnnotations;
 
 namespace MyBookStoreApp.MyBookStoreApp.Web.ViewModels
@@ -21,8 +22,10 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.ViewModels
 
         [Required]
         public DateTime PublicationDate { get; set; }
-
-
+        public string AuthorName { get; set; }
+        public string BookGenre { get; set; }
+        public SelectList Authors { get;set; }
+        public SelectList Genres { get;set; }
     }
 
 }

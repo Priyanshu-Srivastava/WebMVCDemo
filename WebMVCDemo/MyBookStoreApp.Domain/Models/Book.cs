@@ -22,7 +22,7 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Models
         public decimal Price { get; set; }
 
         [Required]
-        public DateTime PublicationDate { get; set; }
+        public DateTimeOffset PublicationDate { get; set; }
 
         public Author Author { get; set; }
         public Genre Genre { get; set; }

@@ -17,6 +17,11 @@ namespace MyBookStoreApp.MyBookStoreApp.Domain.Services
             return await _genreRepository.GetAllGenres();
         }
 
+        public async Task<(IEnumerable<Genre>,int)> GetPagedGenreData(int currentPageIndex = 0, int pageSize =10)
+        {
+            return await _genreRepository.GetPagedGenres(currentPageIndex, pageSize);
+        }
+
         public async Task<Genre> GetGenreById(Guid id)
         {
             return await _genreRepository.GetGenreById(id);

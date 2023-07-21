@@ -12,9 +12,9 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.Controllers
         {
             _genreService = genreService;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 10)
         {
-            var genres = await _genreService.GetAllGenres();
+            var (genres, count) = await _genreService.GetPagedGenreData(page - 1, pageSize);
             var genreList = new List<GenreViewModel>();
             if (genres != null)
             {
@@ -29,9 +29,18 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.Controllers
                     genreList.Add(genreItem);
                 }
             }
-            return View(genreList);
+            var totalPages = Math.Ceiling((decimal)(count / pageSize));
+            var pagedGenreViewModel = new PagedViewModel<GenreViewModel>
+            {
+                Data = genreList,
+                CurrentPage = page - 1,
+                PageSize = pageSize,
+                TotalPages = (int)totalPages
+            };
+
+            return View(pagedGenreViewModel);
         }
-        [HttpGet]
+
         public IActionResult Create()
         {
             var genreViewModel = new GenreViewModel();
@@ -41,50 +50,85 @@ namespace MyBookStoreApp.MyBookStoreApp.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(GenreViewModel viewModel)
         {
-            var genreModel = new Genre
+            try
             {
-                GenreId = Guid.NewGuid(),
-                Name = viewModel.Name,
-                Description = viewModel.Description
-            };
+                if (ModelState.IsValid)
+                {
+                    var genreModel = new Genre
+                    {
+                        GenreId = Guid.NewGuid(),
+                        Name = viewModel.Name,
+                        Description = viewModel.Description
+                    };
 
-            await _genreService.CreateGenre(genreModel);
-
-            return View(viewModel);
+                    await _genreService.CreateGenre(genreModel);
+                    return Ok(new { success = true, message = $"Genre {viewModel.Name} created successfully!" });
+                }
+                else
+                {
+                    return Ok(new { success = false, message = $"Please validate your data and try again!" });
+                }
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, new { success = false, message = $"There was an error creating the genre. Please try again!!" });
+            }
         }
 
         public async Task<IActionResult> Update(string id)
         {
-            var genre = _genreService.GetGenreById(Guid.Parse(id)).Result;
+            var genre = await _genreService.GetGenreById(Guid.Parse(id));
             var viewModel = new GenreViewModel
             {
                 GenreId = genre.GenreId,
                 Name = genre.Name,
                 Description = genre.Description
             };
+
             return View(viewModel);
         }
+
 
         [HttpPatch]
         public async Task<IActionResult> Update(GenreViewModel viewModel)
         {
-            var genreModel = new Genre
+            try
             {
-                GenreId = viewModel.GenreId,
-                Name = viewModel.Name,
-                Description = viewModel.Description
-            };
+                if (ModelState.IsValid)
+                {
+                    var genreModel = new Genre
+                    {
+                        GenreId = viewModel.GenreId,
+                        Name = viewModel.Name,
+                        Description = viewModel.Description
+                    };
 
-            await _genreService.UpdateGenre(genreModel);
-
-            return View(viewModel.GenreId);
+                    await _genreService.UpdateGenre(genreModel);
+                    return Ok(new { success = true, message = $"Genre details updated successfully!" });
+                }
+                else
+                {
+                    return Ok(new { success = false, message = "Failed to update genre details. Validate data and try again" });
+                }
+            }
+            catch
+            {
+                return StatusCode(500, new { success = false, message = "An error occurred while updating genre details." });
+            }
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(string id)
         {
-            await _genreService.DeleteGenre(Guid.Parse(id));
-            return RedirectToAction("Index");
+            try
+            {
+                await _genreService.DeleteGenre(Guid.Parse(id));
+                return Ok(new { success = true, message = "Genre successfully deleted!" });
+            }
+            catch
+            {
+                return StatusCode(500, new { success = false, message = "Looks like there was an error deleting the genre. Please try again!" });
+            }
         }
     }
 }
